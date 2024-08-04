@@ -17,7 +17,7 @@ export default function Home() {
     const [firestore, setFirestore] = useState(null);
 
     useEffect(() => {
-        const { firestore } = initializeFirebase();
+        const { firestore } = initializeFirebaseClient();
         setFirestore(firestore);
     }, []);
 
