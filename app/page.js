@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { firestore } from "@/firebase"; // Make sure this import still works
+import { initializeFirebase } from "@/firebase"; // Make sure this import still works
 import { Box, Modal, Typography, Stack, TextField, Button, IconButton, InputAdornment, Fade } from '@mui/material';
 import { collection, getDocs, setDoc, deleteDoc, getDoc, query, doc } from "firebase/firestore";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,6 +14,13 @@ export default function Home() {
     const [itemName, setItemName] = useState('');
     const [filter, setFilter] = useState('');
     const [filteredInventory, setFilteredInventory] = useState([]);
+	const [firestore, setFirestore] = useState(null);
+
+	
+	useEffect(() => {
+        const { firestore } = initializeFirebase();
+        setFirestore(firestore);
+    }, []);
 
     const updateInventory = async () => {
         try {
