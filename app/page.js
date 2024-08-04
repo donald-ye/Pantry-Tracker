@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
-import { initializeFirebase } from "@/firebase"; // Make sure this import still works
+import { initializeFirebase } from '@/firebase'; // Adjust the import path according to your project structure
 import { Box, Modal, Typography, Stack, TextField, Button, IconButton, InputAdornment, Fade } from '@mui/material';
-import { collection, getDocs, setDoc, deleteDoc, getDoc, query, doc } from "firebase/firestore";
-import SearchIcon from "@mui/icons-material/Search";
+import { collection, getDocs, setDoc, deleteDoc, getDoc, query, doc } from 'firebase/firestore';
+import SearchIcon from '@mui/icons-material/Search';
 
 const backgroundImage = 'https://parr.durasupreme.com/wp-content/uploads/2022/07/SEIG01_HuntleyKitchen-1.jpg';
 
@@ -14,17 +14,16 @@ export default function Home() {
     const [itemName, setItemName] = useState('');
     const [filter, setFilter] = useState('');
     const [filteredInventory, setFilteredInventory] = useState([]);
-	const [firestore, setFirestore] = useState(null);
+    const [firestore, setFirestore] = useState(null);
 
-	
-	useEffect(() => {
+    useEffect(() => {
         const { firestore } = initializeFirebase();
         setFirestore(firestore);
     }, []);
 
     const updateInventory = async () => {
+        if (!firestore) return;
         try {
-            if (!firestore) return; // Ensure firestore is available
             const snapshot = query(collection(firestore, 'inventory'));
             const docs = await getDocs(snapshot);
             const inventoryList = [];
@@ -37,13 +36,13 @@ export default function Home() {
             setInventory(inventoryList);
             setFilteredInventory(inventoryList);
         } catch (error) {
-            console.log("Error updating inventory: ", error);
+            console.log('Error updating inventory: ', error);
         }
     };
 
     const addItem = async (item) => {
+        if (!firestore) return;
         try {
-            if (!firestore) return; // Ensure firestore is available
             const docRef = doc(collection(firestore, 'inventory'), item);
             const docSnap = await getDoc(docRef);
 
@@ -55,13 +54,13 @@ export default function Home() {
             }
             await updateInventory();
         } catch (error) {
-            console.log("Error adding item: ", error);
+            console.log('Error adding item: ', error);
         }
     };
 
     const removeItem = async (item) => {
+        if (!firestore) return;
         try {
-            if (!firestore) return; // Ensure firestore is available
             const docRef = doc(collection(firestore, 'inventory'), item);
             const docSnap = await getDoc(docRef);
 
@@ -80,8 +79,10 @@ export default function Home() {
     };
 
     useEffect(() => {
-        updateInventory();
-    }, []);
+        if (firestore) {
+            updateInventory();
+        }
+    }, [firestore]);
 
     useEffect(() => {
         setFilteredInventory(
