@@ -23,13 +23,11 @@ let firebaseApp;
 let firestore;
 let auth;
 
-const initializeFirebase = () => {
-    if (typeof window !== 'undefined' && !firebaseApp) {
+export const initializeFirebaseClient = () => {
+    if (!firebaseApp) {
         firebaseApp = initializeApp(firebaseConfig);
         firestore = getFirestore(firebaseApp);
         auth = getAuth(firebaseApp);
     }
     return { firebaseApp, firestore, auth };
 };
-
-export { initializeFirebase };

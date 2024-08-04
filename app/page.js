@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { initializeFirebase } from '@/firebase'; // Adjust the import path according to your project structure
+import { initializeFirebaseClient } from '@/firebase'; // Adjust the import path according to your project structure
 import { Box, Modal, Typography, Stack, TextField, Button, IconButton, InputAdornment, Fade } from '@mui/material';
 import { collection, getDocs, setDoc, deleteDoc, getDoc, query, doc } from 'firebase/firestore';
 import SearchIcon from '@mui/icons-material/Search';
